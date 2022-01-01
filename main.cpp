@@ -25,7 +25,7 @@ static void qtdemux_parser_link(GstElement *element, GstPad *pad, GstElement* pa
   } 
 } 
 
-static GstPadProbeReturn osd_sink_pad_buffer_probe(GstPad *pad, GstPadProbeInfo *info, gpointer u_data) {
+static GstPadProbeReturn get_probe(GstPad *pad, GstPadProbeInfo *info, gpointer u_data) {
   GstBuffer *buf = (GstBuffer*)info->data;
   guint num_rects = 0; 
   NvDsObjectMeta *obj_meta = NULL;
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
   gst_object_unref(streammux_pad);
 
   osd_sink_pad = gst_element_get_static_pad(sink, "sink");
-  gst_pad_add_probe(osd_sink_pad, GST_PAD_PROBE_TYPE_BUFFER, osd_sink_pad_buffer_probe, NULL, NULL);
+  gst_pad_add_probe(osd_sink_pad, GST_PAD_PROBE_TYPE_BUFFER, get_probe, NULL, NULL);
 
   g_print("Now playing: %s\n", argv[1]);
   gst_element_set_state(pipeline, GST_STATE_PLAYING);
